@@ -1,7 +1,27 @@
 package com.nikulin.buildKeeper.dal.entities;
 
-public class Item extends BKEntity {
-    public Item(String name) {
-        super(name);
-    }
+import lombok.Data;
+
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Data
+@Entity
+@Table(name = "items")
+public class Item  implements Serializable {
+   @Column(name="id")
+   @Id
+   @GeneratedValue(strategy= GenerationType.IDENTITY)
+   private Integer id;
+
+   @Column(name="name", unique = true)
+   private String name;
+
+   public Item(String itemName) {
+      this.name = itemName;
+   }
+
+   public Item() {
+
+   }
 }
