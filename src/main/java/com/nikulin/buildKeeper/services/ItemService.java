@@ -4,6 +4,7 @@ import com.nikulin.buildKeeper.dal.entities.Item;
 import com.nikulin.buildKeeper.dal.repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -26,5 +27,10 @@ public class ItemService {
 
     public void removeById(Integer itemId) {
         itemRepository.deleteById(itemId);
+    }
+
+    @Transactional
+    public void removeByName(String name) {
+        itemRepository.deleteByName(name);
     }
 }

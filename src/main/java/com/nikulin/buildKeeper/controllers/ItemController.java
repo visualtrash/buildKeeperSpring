@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/items")
 public class ItemController {
+
     @Autowired
     ItemService itemService;
 
@@ -23,4 +24,16 @@ public class ItemController {
     public Item create(@RequestBody String name) {
         return itemService.add(name);
     }
+
+    @RequestMapping(method = RequestMethod.POST, path = "deleteById")
+    public void deleteById(@RequestBody Integer id) {
+        itemService.removeById(id);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "deleteByName")
+    public void deleteByName(@RequestBody String name) {
+        itemService.removeByName(name);
+    }
+
+
 }
