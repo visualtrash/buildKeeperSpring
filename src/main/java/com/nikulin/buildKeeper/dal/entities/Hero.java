@@ -1,6 +1,9 @@
 package com.nikulin.buildKeeper.dal.entities;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,4 +27,5 @@ public class Hero implements Serializable {
     public Hero() {
 
     }
+
 }

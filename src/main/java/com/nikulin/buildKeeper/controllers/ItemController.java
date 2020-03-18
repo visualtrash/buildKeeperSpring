@@ -34,6 +34,4 @@ public class ItemController {
     public void deleteByName(@RequestBody String name) {
         itemService.removeByName(name);
     }
-
-
 }

@@ -27,8 +27,8 @@ public class HeroService {
         return heroRepository.save(hero);
     }
 
-    public void removeById(Integer heroId) {
-        heroRepository.deleteById(heroId);
+    public void removeById(Integer id) {
+        heroRepository.deleteById(id);
     }
 
     @Transactional
@@ -44,16 +44,19 @@ public class HeroService {
         return heroRepository.findById(heroId);
     }
 
-//    public Optional<Hero> getHeroByName(String name) {
-//        return heroRepository.;
-//    }
+    public Optional<Hero> getHeroByName(String name) {
+        return heroRepository.getHeroByName(name);
+    }
 
-//    public void editHeroName(UUID id, String newName) {
-//        Iterable<Hero> list = heroRepository.findAll();
-//        for (Hero eachHero : list) {
-//            if (eachHero.getId().equals(id)) {
-//                eachHero.setName(newName);
-//            }
-//        }
-//    }
+    public Hero editHeroName(Integer id, String newName) throws Exception {
+        Optional<Hero> hero = heroRepository.findById(id);
+
+        if (!hero.isPresent()) {
+            throw new Exception("hero with id = " + id + " is not exists");
+        }
+
+        hero.get().setName(newName);
+        return heroRepository.save(hero.get());
+    }
+
 }
