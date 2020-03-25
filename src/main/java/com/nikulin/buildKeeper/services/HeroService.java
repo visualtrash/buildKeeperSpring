@@ -14,10 +14,6 @@ public class HeroService {
     @Autowired
     private HeroRepository heroRepository;
 
-    public HeroService(HeroRepository heroRepository) {
-        this.heroRepository = heroRepository;
-    }
-
     // удобно когда метод добавления сущности потом возвращает новую созданную сущность обратно
     public Hero add(String heroName) {
         return heroRepository.save(new Hero(heroName));

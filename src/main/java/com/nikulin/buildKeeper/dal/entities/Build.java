@@ -1,65 +1,97 @@
 package com.nikulin.buildKeeper.dal.entities;
 
 import com.nikulin.buildKeeper.enums.Ability;
+import com.nikulin.buildKeeper.exceptions.ValidationException;
+import lombok.Data;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Build extends BKEntity {
+import static com.nikulin.buildKeeper.enums.Ability.*;
 
+@Data
+@Entity
+@Table(name = "builds")
+public class Build implements Serializable {
+    @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "name")
+    private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hero_id", nullable = false)
     private Hero hero;
+
+    @Column(name = "hero_position")
     private String heroPosition;
+
+    @ManyToMany
+    @JoinTable(name="build_item",
+            joinColumns = @JoinColumn(name="build_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name="item_id", referencedColumnName="id")
+    )
     private List<Item> items;
-    private Rune rune;
-    private List<Ability> abilities;
 
-    public Build(String name, Hero hero, List<Item> items, Rune rune, List<Ability> ability, String heroPosition) {
-        super(name);
+    @Column(name = "abilities")
+    private String abilities;
 
-        this.hero = hero;
-        this.items = items;
-        this.rune = rune;
-        this.abilities = ability;
-        this.heroPosition = heroPosition;
-    }
-
-
-    public String getHeroPosition() {
-        return heroPosition;
-    }
-
-    public void setHeroPosition(String position) {
-        this.heroPosition = position;
-    }
-
-    public Hero getHero() {
-        return hero;
-    }
-
-    public void setHero(Hero hero) {
-        this.hero = hero;
-    }
-
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
-
-    public Rune getRune() {
-        return rune;
-    }
-
-    public void setRune(Rune rune) {
-        this.rune = rune;
-    }
-
+    // get(list) + set(void ->list -> string)
     public List<Ability> getAbilities() {
-        return abilities;
+        String[] strings = abilities.split("-");
+
+        List<Ability> list = new ArrayList<>();
+        for (String abilityString : strings) {
+            switch (abilityString) {
+                case "Q":
+                    list.add(Q);
+                    break;
+                case "W":
+                    list.add(W);
+                    break;
+                case "E":
+                    list.add(E);
+                    break;
+                case "R":
+                    list.add(R);
+                    break;
+                default:
+                    throw new ValidationException("incorrect ability " + abilityString);
+            }
+        }
+        return list;
     }
 
-    public void setAbilities(List<Ability> abilities) {
-        this.abilities = abilities;
+    public void setAbilities(List<Ability> list) {
+        List<String> result = new ArrayList<>();
+
+        for (Ability ability : list) {
+            switch (ability) {
+                case Q:
+                    result.add("Q");
+                    break;
+                case W:
+                    result.add("W");
+                    break;
+                case E:
+                    result.add("E");
+                    break;
+                case R:
+                    result.add("R");
+                    break;
+                default:
+                    throw new ValidationException("incorrect ability " + ability);
+            }
+        }
+        this.abilities = String.join("-", result);
     }
+
+
+
+    // TODO:
+    //private Rune rune;
 }

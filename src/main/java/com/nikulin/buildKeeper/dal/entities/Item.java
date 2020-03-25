@@ -17,6 +17,9 @@ public class Item  implements Serializable {
    @Column(name="name", unique = true)
    private String name;
 
+   @Column(name = "img")
+   private String img;
+
    public Item(String itemName) {
       this.name = itemName;
    }
