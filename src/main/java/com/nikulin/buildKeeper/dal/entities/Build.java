@@ -1,6 +1,7 @@
 package com.nikulin.buildKeeper.dal.entities;
 
 import com.nikulin.buildKeeper.enums.Ability;
+import com.nikulin.buildKeeper.enums.HeroPosition;
 import com.nikulin.buildKeeper.exceptions.ValidationException;
 import lombok.Data;
 
@@ -28,12 +29,12 @@ public class Build implements Serializable {
     private Hero hero;
 
     @Column(name = "hero_position")
-    private String heroPosition;
+    private HeroPosition heroPosition;
 
     @ManyToMany
-    @JoinTable(name="build_item",
-            joinColumns = @JoinColumn(name="build_id", referencedColumnName="id"),
-            inverseJoinColumns = @JoinColumn(name="item_id", referencedColumnName="id")
+    @JoinTable(name = "build_item",
+            joinColumns = @JoinColumn(name = "build_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id")
     )
     private List<Item> items;
 
@@ -90,8 +91,11 @@ public class Build implements Serializable {
         this.abilities = String.join("-", result);
     }
 
-
+    public void setHeroPosition(Enum<HeroPosition> heroPosition) {
+        this.heroPosition = (HeroPosition) heroPosition;
+    }
 
     // TODO:
     //private Rune rune;
 }
+

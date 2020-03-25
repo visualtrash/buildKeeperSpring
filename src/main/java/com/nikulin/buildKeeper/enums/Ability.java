@@ -4,5 +4,5 @@ public enum Ability {
     Q,
     W,
     E,
-    R;
+    R
 }
