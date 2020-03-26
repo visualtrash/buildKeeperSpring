@@ -94,4 +94,3 @@ public class Build implements Serializable {
     // TODO:
     //private Rune rune;
 }
-
