@@ -5,9 +5,9 @@ import com.nikulin.buildKeeper.dal.entities.Hero;
 import com.nikulin.buildKeeper.dal.entities.Item;
 import com.nikulin.buildKeeper.dal.repositories.BuildRepository;
 import com.nikulin.buildKeeper.enums.Ability;
+import com.nikulin.buildKeeper.enums.HeroPosition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 public class BuildService {
@@ -24,12 +24,11 @@ public class BuildService {
         return buildRepository.save(build);
     }
 
-//    public Build add(String name, Enum position, Hero hero,
-//                     Iterable<Item> items, Iterable<Ability> abilities) {
-//
-//
-//        return buildRepository.save(new Build(name, position, hero, items, abilities));
-//    }
+    public Build add(String name, HeroPosition heroPosition, Hero hero,
+                     Iterable<Item> items, Iterable<Ability> abilities) {
+
+        return buildRepository.save(new Build(name, hero, heroPosition, items, abilities));
+    }
 
     public void removeById(Integer id) {
         buildRepository.deleteById(id);

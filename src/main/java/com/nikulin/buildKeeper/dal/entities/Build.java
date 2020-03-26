@@ -67,6 +67,14 @@ public class Build implements Serializable {
         return list;
     }
 
+    public Build(String name, Hero hero, HeroPosition heroPosition, Iterable<Item> items, Iterable<Ability> abilities) {
+        this.name = name;
+        this.hero = hero;
+        this.heroPosition = heroPosition;
+        this.items = (List<Item>) items;
+        this.abilities = String.valueOf(abilities);
+    }
+
     public void setAbilities(List<Ability> list) {
         List<String> result = new ArrayList<>();
 
