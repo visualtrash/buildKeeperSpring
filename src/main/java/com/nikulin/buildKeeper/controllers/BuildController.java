@@ -1,5 +1,6 @@
 package com.nikulin.buildKeeper.controllers;
 
+import com.nikulin.buildKeeper.controllers.dtos.BuildDto;
 import com.nikulin.buildKeeper.dal.entities.Build;
 import com.nikulin.buildKeeper.dal.entities.Hero;
 import com.nikulin.buildKeeper.dal.entities.Item;
@@ -16,11 +17,16 @@ public class BuildController {
     @Autowired
     BuildService buildService;
 
-    @RequestMapping(method = RequestMethod.POST, path = "create")
+    @RequestMapping(method = RequestMethod.POST, path = "create1")
     public Build create(@RequestParam String name, @RequestParam HeroPosition heroPosition, @RequestParam Hero hero,
                         @RequestParam Iterable<Item> items, Iterable<Ability> abilities) {
 
         return buildService.add(name, heroPosition, hero, items, abilities);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "create")
+    public Build create(@RequestBody BuildDto build) {
+        return buildService.add(build);
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "getAll")
@@ -32,6 +38,4 @@ public class BuildController {
     public void deleteById(@RequestBody Integer id) {
         buildService.removeById(id);
     }
-
-
 }

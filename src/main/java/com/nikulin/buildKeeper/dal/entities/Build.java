@@ -3,7 +3,9 @@ package com.nikulin.buildKeeper.dal.entities;
 import com.nikulin.buildKeeper.enums.Ability;
 import com.nikulin.buildKeeper.enums.HeroPosition;
 import com.nikulin.buildKeeper.exceptions.ValidationException;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -39,6 +41,7 @@ public class Build implements Serializable {
     private List<Item> items;
 
     @Column(name = "abilities")
+    @Setter(AccessLevel.NONE)
     private String abilities;
 
     // get(list) + set(void ->list -> string)
@@ -97,6 +100,22 @@ public class Build implements Serializable {
             }
         }
         this.abilities = String.join("-", result);
+    }
+
+
+    public Build() {
+    }
+
+    public void setAbilities(String abilities) {
+        String[] s = abilities.split("-");
+
+        for (String ability : s) {
+            if (!ability.equals("Q") && !ability.equals("W") &&
+                    !ability.equals("E") && !ability.equals("R")) {
+                throw new ValidationException("incorrect ability " + ability);
+            }
+        }
+        this.abilities = abilities;
     }
 
     // TODO:

@@ -63,12 +63,12 @@ class BuildEditor extends Component {
       return;
     }
 
-    Axios.post("http://localhost:8080/api/build/create", {
+    Axios.post("http://localhost:8080/api/builds/create", {
       name,
-      position,
+      heroPosition: position.id,
       hero,
       items,
-      abilities,
+      //abilities,
     })
       .then(res => {
         enqueueSnackbar("Новый билд добавлен!", {
