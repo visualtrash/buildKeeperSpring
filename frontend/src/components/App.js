@@ -19,9 +19,8 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   header: {
-    background: "#b6975a",
     background:
-      "linear-gradient(90deg, rgba(83,72,51,1) 6%, rgba(182,151,90,1) 48%, rgba(111,95,64,1) 91%)",
+      "#b6975a linear-gradient(90deg, rgba(83,72,51,1) 6%, rgba(182,151,90,1) 48%, rgba(111,95,64,1) 91%)",
   },
   img: {
     height: 43,

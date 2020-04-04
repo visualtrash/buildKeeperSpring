@@ -9,6 +9,7 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import Button from "@material-ui/core/Button";
 import {withSnackbar} from "notistack";
 import Axios from "axios";
+import AbilitySelect from "./AbilitySelect";
 
 const styles = theme => ({
   root: {
@@ -32,7 +33,7 @@ class BuildEditor extends Component {
     position: undefined,
     hero: undefined,
     items: [],
-    abilities: [],
+    abilities: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
   };
 
   createBuild = () => {
@@ -68,7 +69,7 @@ class BuildEditor extends Component {
       heroPosition: position.id,
       hero,
       items,
-      //abilities,
+      abilities: abilities.join("-"),
     })
       .then(res => {
         enqueueSnackbar("Новый билд добавлен!", {
@@ -82,36 +83,43 @@ class BuildEditor extends Component {
       });
   };
 
-  setName = ev => {
+  handleNameChange = ev => {
     this.setState({name: ev.target.value});
   };
 
-  onHeroSelect = hero => {
+  handleHeroSelect = hero => {
     this.setState({hero});
   };
 
-  onPositionSelect = position => {
+  handlePositionSelect = position => {
     this.setState({position});
   };
 
-  onHeroDeselect = () => {
+  handleHeroDeselect = () => {
     this.setState({hero: null});
   };
 
-  onItemSelect = item => {
+  handleItemSelect = item => {
     const {items} = this.state;
     const newItems = [...items, item];
     this.setState({items: newItems});
   };
 
-  onItemDeselect = item => {
+  handleItemDeselect = item => {
     const {items} = this.state;
     const newItems = [...items.filter(i => i !== item)];
     this.setState({items: newItems});
   };
 
+  handleAbilitiesChange = (index, ability) => {
+    const {abilities} = this.state;
+    abilities[Number(index)] = ability;
+
+    this.setState({abilities: [...abilities]});
+  };
+
   render() {
-    const {name, hero, items, position} = this.state;
+    const {name, hero, items, position, abilities} = this.state;
     const {classes} = this.props;
 
     return (
@@ -121,28 +129,32 @@ class BuildEditor extends Component {
           label="1. Название билда"
           variant="filled"
           value={name}
-          onChange={this.setName}
+          onChange={this.handleNameChange}
         />
         <TypoGraphy className={classes.label} variant="subtitle1">
           2. Выберете героя
         </TypoGraphy>
         <HeroSelect
           selected={hero}
-          onSelect={this.onHeroSelect}
-          onDeselect={this.onHeroDeselect}
+          onSelect={this.handleHeroSelect}
+          onDeselect={this.handleHeroDeselect}
         />
         <TypoGraphy className={classes.label} variant="subtitle1">
           3. Выберете позицию
         </TypoGraphy>
-        <PositionSelect selected={position} onSelect={this.onPositionSelect} />
+        <PositionSelect selected={position} onSelect={this.handlePositionSelect} />
         <TypoGraphy className={classes.label} variant="subtitle1">
           4. Выберете вещи
         </TypoGraphy>
         <ItemSelect
           selectedItems={items}
-          onDeselect={this.onItemDeselect}
-          onSelect={this.onItemSelect}
+          onDeselect={this.handleItemDeselect}
+          onSelect={this.handleItemSelect}
         />
+        <TypoGraphy className={classes.label} variant="subtitle1">
+          4. Выберете способности
+        </TypoGraphy>
+        <AbilitySelect selectedItems={abilities} onChange={this.handleAbilitiesChange} />
         <Button
           variant="contained"
           className={classes.button}
