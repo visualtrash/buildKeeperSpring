@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {withStyles} from "@material-ui/core/styles";
+import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 
@@ -56,23 +56,24 @@ const styles = theme => ({
 });
 
 const positions = [
-  {id: "TOP", img: "https://www.mobafire.com/images/lanes/white-top.png"},
-  {id: "JUNGLE", img: "https://www.mobafire.com/images/lanes/white-jungle.png"},
-  {id: "MIDDLE", img: "https://www.mobafire.com/images/lanes/white-middle.png"},
-  {id: "SUPPORT", img: "https://www.mobafire.com/images/lanes/white-support.png"},
-  {id: "BOTTOM", img: "https://www.mobafire.com/images/lanes/white-bottom.png"},
+  { id: "TOP", img: "https://www.mobafire.com/images/lanes/white-top.png" },
+  { id: "JUNGLE", img: "https://www.mobafire.com/images/lanes/white-jungle.png" },
+  { id: "MIDDLE", img: "https://www.mobafire.com/images/lanes/white-middle.png" },
+  { id: "SUPPORT", img: "https://www.mobafire.com/images/lanes/white-support.png" },
+  { id: "BOTTOM", img: "https://www.mobafire.com/images/lanes/white-bottom.png" },
 ];
 
 class PositionSelect extends Component {
   render() {
-    const {classes, selected, onSelect} = this.props;
+    const { classes, selected, onSelect } = this.props;
 
     return (
       <Card className={classes.root} variant="outlined">
         <CardActionArea className={classes.selectedList}>
           {positions.map(pos => (
             <div
-              style={{backgroundImage: "url(" + pos.img + ")", backgroundRepeat: "round"}}
+              key={pos.id}
+              style={{ backgroundImage: "url(" + pos.img + ")", backgroundRepeat: "round" }}
               className={`${classes.item} ${selected &&
                 selected.id === pos.id &&
                 classes.selected}`}

@@ -37,7 +37,7 @@ const styles = theme => ({
     paddingLeft: 4,
   },
   item: {
-    width: 60,
+    width: 43,
     display: "flex",
     margin: 4,
     transition: "all .2s ease-in-out",
