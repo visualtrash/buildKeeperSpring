@@ -3,7 +3,6 @@ package com.nikulin.buildKeeper.enums;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -38,6 +37,4 @@ public enum HeroPosition {
                 .ofNullable(FORMAT_MAP.get(string))
                 .orElseThrow(() -> new IllegalArgumentException(string));
     }
-
-
 }

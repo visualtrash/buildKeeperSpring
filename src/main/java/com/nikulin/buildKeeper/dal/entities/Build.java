@@ -44,6 +44,15 @@ public class Build implements Serializable {
     @Setter(AccessLevel.NONE)
     private String abilities;
 
+    @Column(name = "rune_set_1")
+    private String rune1;
+
+    @Column(name = "rune_set_2")
+    private String rune2;
+
+    @Column(name = "rune_set_3")
+    private String rune3;
+
     // get(list) + set(void ->list -> string)
     public List<Ability> getAbilities() {
         String[] strings = abilities.split("-");
@@ -118,6 +127,34 @@ public class Build implements Serializable {
         this.abilities = abilities;
     }
 
+    public void setRune1(String rune) {
+        validateRunes(rune);
+        this.rune1 = rune;
+    }
+
+    public void setRune2(String rune) {
+        validateRunes(rune);
+        this.rune2 = rune;
+    }
+
+    public void setRune3(String rune) {
+        validateRunes(rune);
+        this.rune2 = rune;
+    }
+
+    private void validateRunes(String rune) {
+        String[] runeStrings = rune.split("-");
+
+        for (String currentRune : runeStrings) {
+            if (!currentRune.equals("0") && !currentRune.equals("1") &&
+                    !currentRune.equals("2") && !currentRune.equals("3") && !currentRune.equals("4")) {
+                throw new ValidationException("incorrect rune " + currentRune);
+            }
+
+        }
+    }
+
     // TODO:
     //private Rune rune;
 }
+
