@@ -49,7 +49,12 @@ public class BuildService {
         Build build = new Build();
 
         build.setName(buildDto.getName());
+
         build.setHeroPosition(buildDto.getHeroPosition());
+
+        build.setRune1(buildDto.getRunes1());
+        build.setRune2(buildDto.getRunes2());
+        build.setRune3(buildDto.getRunes3());
 
         Optional<Hero> heroById = heroRepository.findById(buildDto.getHero().getId());
         if (heroById.isPresent()) {
@@ -83,6 +88,11 @@ public class BuildService {
     public void remove(Build build) {
         buildRepository.delete(build);
     }
+
+//TODO
+// public void getById(Build build) {
+//        buildRepository.delete(build);
+//    }
 
 //    TODO
 //    public void updateBuild()

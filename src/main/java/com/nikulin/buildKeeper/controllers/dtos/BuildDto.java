@@ -12,7 +12,7 @@ public class BuildDto extends BaseDto {
     BaseDto hero;
     String abilities;
     List<BaseDto> items;
-    String runeSet1;
-    String runeSet2;
-    String runeSet3;
+    String runes1;
+    String runes2;
+    String runes3;
 }

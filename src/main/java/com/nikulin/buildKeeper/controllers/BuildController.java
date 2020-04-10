@@ -38,4 +38,10 @@ public class BuildController {
     public void deleteById(@RequestBody Integer id) {
         buildService.removeById(id);
     }
+
+//TODO
+//    @RequestMapping(method = RequestMethod.GET, path = "getById")
+//    public void getById(@RequestBody Integer id) {
+//        buildService.;
+//    }
 }

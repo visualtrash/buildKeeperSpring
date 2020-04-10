@@ -45,13 +45,24 @@ public class Build implements Serializable {
     private String abilities;
 
     @Column(name = "rune_set_1")
+    @Setter(AccessLevel.NONE)
     private String rune1;
 
     @Column(name = "rune_set_2")
+    @Setter(AccessLevel.NONE)
     private String rune2;
 
     @Column(name = "rune_set_3")
+    @Setter(AccessLevel.NONE)
     private String rune3;
+
+    public Build(String name, Hero hero, HeroPosition heroPosition, Iterable<Item> items, Iterable<Ability> abilities) {
+        this.name = name;
+        this.hero = hero;
+        this.heroPosition = heroPosition;
+        this.items = (List<Item>) items;
+        this.abilities = String.valueOf(abilities);
+    }
 
     // get(list) + set(void ->list -> string)
     public List<Ability> getAbilities() {
@@ -79,14 +90,6 @@ public class Build implements Serializable {
         return list;
     }
 
-    public Build(String name, Hero hero, HeroPosition heroPosition, Iterable<Item> items, Iterable<Ability> abilities) {
-        this.name = name;
-        this.hero = hero;
-        this.heroPosition = heroPosition;
-        this.items = (List<Item>) items;
-        this.abilities = String.valueOf(abilities);
-    }
-
     public void setAbilities(List<Ability> list) {
         List<String> result = new ArrayList<>();
 
@@ -111,10 +114,6 @@ public class Build implements Serializable {
         this.abilities = String.join("-", result);
     }
 
-
-    public Build() {
-    }
-
     public void setAbilities(String abilities) {
         String[] s = abilities.split("-");
 
@@ -127,9 +126,43 @@ public class Build implements Serializable {
         this.abilities = abilities;
     }
 
+    public Build() {
+    }
+
     public void setRune1(String rune) {
         validateRunes(rune);
         this.rune1 = rune;
+    }
+
+    public List<String> getRune1() {
+        String[] strings = rune1.split("-");
+
+        List<String> list = new ArrayList<>();
+        for (String runeString : strings) {
+            switch (runeString) {
+                case "0":
+                    list.add("0");
+                    break;
+                case "1":
+                    list.add("1");
+                    break;
+                case "2":
+                    list.add("2");
+                    break;
+                case "3":
+                    list.add("3");
+                    break;
+                case "4":
+                    list.add("4");
+                    break;
+                case "5":
+                    list.add("5");
+                    break;
+                default:
+                    throw new ValidationException("incorrect rune " + runeString);
+            }
+        }
+        return list;
     }
 
     public void setRune2(String rune) {
@@ -137,9 +170,60 @@ public class Build implements Serializable {
         this.rune2 = rune;
     }
 
+    public List<String> getRune2() {
+        String[] strings = rune2.split("-");
+
+
+        List<String> list = new ArrayList<>();
+        for (String runeString : strings) {
+            switch (runeString) {
+                case "0":
+                    list.add("0");
+                    break;
+                case "1":
+                    list.add("1");
+                    break;
+                case "2":
+                    list.add("2");
+                    break;
+                case "3":
+                    list.add("3");
+                    break;
+                case "4":
+                    list.add("4");
+                    break;
+                default:
+                    throw new ValidationException("incorrect rune " + runeString);
+            }
+        }
+        return list;
+    }
+
+    public List<String> getRune3() {
+        String[] strings = rune3.split("-");
+
+        List<String> list = new ArrayList<>();
+        for (String runeString : strings) {
+            switch (runeString) {
+                case "1":
+                    list.add("1");
+                    break;
+                case "2":
+                    list.add("2");
+                    break;
+                case "3":
+                    list.add("3");
+                    break;
+                default:
+                    throw new ValidationException("incorrect rune " + runeString);
+            }
+        }
+        return list;
+    }
+
     public void setRune3(String rune) {
         validateRunes(rune);
-        this.rune2 = rune;
+        this.rune3 = rune;
     }
 
     private void validateRunes(String rune) {
