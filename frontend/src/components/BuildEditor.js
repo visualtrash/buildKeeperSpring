@@ -12,7 +12,7 @@ import Axios from "axios";
 import AbilitySelect from "./AbilitySelect";
 import RuneSelect from "./RuneSelect";
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     display: "flex",
     flexWrap: "wrap",
@@ -34,15 +34,43 @@ class BuildEditor extends Component {
     position: undefined,
     hero: undefined,
     items: [],
-    abilities: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+    abilities: [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ],
     runes1: ["", "", "", "", ""],
     runes2: ["", "", "", ""],
-    runes3: ["", "", "",],
+    runes3: ["", "", ""],
   };
 
   createBuild = () => {
-    const { name, position, hero, items, abilities, runes1, runes2, runes3 } = this.state;
-    const { enqueueSnackbar } = this.props;
+    const {
+      name,
+      position,
+      hero,
+      items,
+      abilities,
+      runes1,
+      runes2,
+      runes3,
+    } = this.state;
+    const { enqueueSnackbar, id: buildId } = this.props;
     if (!name) {
       enqueueSnackbar("Имя билда обязательно для заполнения", {
         variant: "error",
@@ -67,57 +95,81 @@ class BuildEditor extends Component {
       });
       return;
     }
-    
-    if (!runes1.every(i => [1, 2, 3, 4, 5].includes(Number(i)))) {
+
+    if (!runes1.every((i) => [1, 2, 3, 4, 5].includes(Number(i)))) {
       enqueueSnackbar("Нужно заполнить все руны 1", {
         variant: "error",
       });
       return;
     }
-    if (!runes2.every(i => [0, 1, 2, 3, 4, 5].includes(Number(i)))) {
+    if (!runes2.every((i) => [0, 1, 2, 3, 4, 5].includes(Number(i)))) {
       enqueueSnackbar("Нужно заполнить все руны 2", {
         variant: "error",
       });
       return;
     }
-    if (!runes3.every(i => [1, 2, 3, 4, 5].includes(Number(i)))) {
+    if (!runes3.every((i) => [1, 2, 3, 4, 5].includes(Number(i)))) {
       enqueueSnackbar("Нужно заполнить все руны 3", {
         variant: "error",
       });
       return;
     }
 
-    Axios.post("http://localhost:8080/api/builds/create", {
-      name,
-      heroPosition: position.id,
-      hero,
-      items,
-      abilities: abilities.join("-"),
-      runes1: runes1.map(Number).join("-"),
-      runes2: runes2.map(Number).join("-"),
-      runes3: runes3.map(Number).join("-")
-    })
-      .then(res => {
-        enqueueSnackbar("Новый билд добавлен!", {
-          variant: "success",
-        });
+    if (buildId) {
+      Axios.post("http://localhost:8080/api/builds/update", {
+        id: buildId,
+        name,
+        heroPosition: position.id,
+        hero,
+        items,
+        abilities: abilities.join("-"),
+        runes1: runes1.map(Number).join("-"),
+        runes2: runes2.map(Number).join("-"),
+        runes3: runes3.map(Number).join("-"),
       })
-      .catch(res => {
-        enqueueSnackbar("Что то пошло не так :(", {
-          variant: "error",
+        .then(() => {
+          enqueueSnackbar(`Билд #${buildId} сохранен!`, {
+            variant: "success",
+          });
+        })
+        .catch(() => {
+          enqueueSnackbar("Что то пошло не так :(", {
+            variant: "error",
+          });
         });
-      });
+    } else {
+      Axios.post("http://localhost:8080/api/builds/create", {
+        name,
+        heroPosition: position.id,
+        hero,
+        items,
+        abilities: abilities.join("-"),
+        runes1: runes1.map(Number).join("-"),
+        runes2: runes2.map(Number).join("-"),
+        runes3: runes3.map(Number).join("-"),
+      })
+        .then(() => {
+          enqueueSnackbar("Новый билд добавлен!", {
+            variant: "success",
+          });
+        })
+        .catch(() => {
+          enqueueSnackbar("Что то пошло не так :(", {
+            variant: "error",
+          });
+        });
+    }
   };
 
-  handleNameChange = ev => {
+  handleNameChange = (ev) => {
     this.setState({ name: ev.target.value });
   };
 
-  handleHeroSelect = hero => {
+  handleHeroSelect = (hero) => {
     this.setState({ hero });
   };
 
-  handlePositionSelect = position => {
+  handlePositionSelect = (position) => {
     this.setState({ position });
   };
 
@@ -125,15 +177,15 @@ class BuildEditor extends Component {
     this.setState({ hero: null });
   };
 
-  handleItemSelect = item => {
+  handleItemSelect = (item) => {
     const { items } = this.state;
     const newItems = [...items, item];
     this.setState({ items: newItems });
   };
 
-  handleItemDeselect = item => {
+  handleItemDeselect = (item) => {
     const { items } = this.state;
-    const newItems = [...items.filter(i => i !== item)];
+    const newItems = [...items.filter((i) => i !== item)];
     this.setState({ items: newItems });
   };
 
@@ -165,9 +217,47 @@ class BuildEditor extends Component {
     this.setState({ runes3: [...runes3] });
   };
 
+  componentDidMount() {
+    const { id: buildId, enqueueSnackbar } = this.props;
+
+    if (buildId) {
+      Axios.get("http://localhost:8080/api/builds/getById", {
+        params: {
+          id: buildId,
+        },
+      })
+        .then((res) => {
+          this.setState({
+            name: res.data.name,
+            position: { id: res.data.position },
+            hero: res.data.hero,
+            items: res.data.items,
+            abilities: res.data.abilities,
+            runes1: res.data.runes1.split("-"),
+            runes2: res.data.runes2.split("-"),
+            runes3: res.data.runes3.split("-"),
+          });
+        })
+        .catch(() => {
+          enqueueSnackbar("Что то пошло не так :(", {
+            variant: "error",
+          });
+        });
+    }
+  }
+
   render() {
-    const { name, hero, items, position, abilities, runes1, runes2, runes3 } = this.state;
-    const { classes } = this.props;
+    const {
+      name,
+      hero,
+      items,
+      position,
+      abilities,
+      runes1,
+      runes2,
+      runes3,
+    } = this.state;
+    const { classes, id: buildId } = this.props;
 
     return (
       <div className={classes.root}>
@@ -189,7 +279,10 @@ class BuildEditor extends Component {
         <TypoGraphy className={classes.label} variant="subtitle1">
           3. Выберете позицию
         </TypoGraphy>
-        <PositionSelect selected={position} onSelect={this.handlePositionSelect} />
+        <PositionSelect
+          selected={position}
+          onSelect={this.handlePositionSelect}
+        />
         <TypoGraphy className={classes.label} variant="subtitle1">
           4. Выберете вещи
         </TypoGraphy>
@@ -201,7 +294,10 @@ class BuildEditor extends Component {
         <TypoGraphy className={classes.label} variant="subtitle1">
           5. Выберете способности
         </TypoGraphy>
-        <AbilitySelect selectedItems={abilities} onChange={this.handleAbilitiesChange} />
+        <AbilitySelect
+          selectedItems={abilities}
+          onChange={this.handleAbilitiesChange}
+        />
         <TypoGraphy className={classes.label} variant="subtitle1">
           6. Выберете руны
         </TypoGraphy>
@@ -214,7 +310,7 @@ class BuildEditor extends Component {
           startIcon={<CloudUploadIcon />}
           onClick={this.createBuild}
         >
-          Создать билд
+          {buildId ? "Сохранить билд" : "Создать билд"}
         </Button>
       </div>
     );

@@ -13,7 +13,7 @@ import TypoGraphy from "@material-ui/core/Typography";
 
 const navConfig = [
   { text: "Новый билд", to: "/" },
-  { text: "Твои билды", to: "/items" },
+  { text: "Твои билды", to: "/builds" },
 ];
 
 const useStyles = makeStyles(theme => ({

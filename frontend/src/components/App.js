@@ -39,7 +39,8 @@ function App() {
       <Container maxWidth="md" component="main" className={classes.container}>
         <Router>
           <BuildEditor path="/" />
-          <Builds path="/builds" />
+          <Builds exact path="/builds" />
+          <BuildEditor path="/builds/:id" />
           <About path="/about" />
         </Router>
       </Container>
