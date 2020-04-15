@@ -89,10 +89,10 @@ public class BuildService {
         buildRepository.delete(build);
     }
 
-//TODO
-// public void getById(Build build) {
-//        buildRepository.delete(build);
-//    }
+
+    public Optional<Build> getById(Integer id) {
+        return buildRepository.findById(id);
+    }
 
 //    TODO
 //    public void updateBuild()

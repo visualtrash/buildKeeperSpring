@@ -66,9 +66,9 @@ class Builds extends Component {
                   subtitle={<span>for: {build.hero.name}</span>}
                   actionIcon={
                     <IconButton
-                      aria-label={`Open ${build.name} #${build.id}`}
-                      className={classes.icon}
-                      onClick={()=>navigate(`/${build.id}`)
+                        aria-label={`Open ${build.name} #${build.id}`}
+                        className={classes.icon}
+                        onClick={() => navigate(`builds/${build.id}`)
                     }
                     >
                       <VisibilityIcon />

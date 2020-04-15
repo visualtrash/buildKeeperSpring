@@ -10,6 +10,8 @@ import com.nikulin.buildKeeper.services.BuildService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("api/builds")
 public class BuildController {
@@ -39,9 +41,9 @@ public class BuildController {
         buildService.removeById(id);
     }
 
-//TODO
-//    @RequestMapping(method = RequestMethod.GET, path = "getById")
-//    public void getById(@RequestBody Integer id) {
-//        buildService.;
-//    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "getById")
+    public Optional<Build> getById(@RequestParam Integer id) {
+        return buildService.getById(id);
+    }
 }
