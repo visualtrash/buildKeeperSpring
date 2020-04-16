@@ -227,15 +227,16 @@ class BuildEditor extends Component {
         },
       })
         .then((res) => {
+            debugger;
           this.setState({
             name: res.data.name,
-            position: { id: res.data.position },
+              position: {id: res.data.heroPosition},
             hero: res.data.hero,
             items: res.data.items,
             abilities: res.data.abilities,
-            runes1: res.data.runes1.split("-"),
-            runes2: res.data.runes2.split("-"),
-            runes3: res.data.runes3.split("-"),
+              runes1: res.data.rune1,
+              runes2: res.data.rune2,
+              runes3: res.data.rune3,
           });
         })
         .catch(() => {
