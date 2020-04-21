@@ -46,4 +46,9 @@ public class BuildController {
     public Optional<Build> getById(@RequestParam Integer id) {
         return buildService.getById(id);
     }
+
+    @RequestMapping(method = RequestMethod.POST, path = "update")
+    public void updateById(@RequestBody BuildDto build) {
+        buildService.updateBuild(build);
+    }
 }

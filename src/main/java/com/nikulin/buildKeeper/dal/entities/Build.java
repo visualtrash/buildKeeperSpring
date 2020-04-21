@@ -5,6 +5,7 @@ import com.nikulin.buildKeeper.enums.HeroPosition;
 import com.nikulin.buildKeeper.exceptions.ValidationException;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -237,8 +238,5 @@ public class Build implements Serializable {
 
         }
     }
-
-    // TODO:
-    //private Rune rune;
 }
 

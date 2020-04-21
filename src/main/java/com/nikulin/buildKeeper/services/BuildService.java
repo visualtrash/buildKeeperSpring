@@ -45,6 +45,7 @@ public class BuildService {
     //2.5 поле АБИЛИТИ взять из входных параметров,  положить в созданный билд
     // (что будет являться результатом выполнения метода)
     //3. сохранить в репозиторий результат (заполненный билд)
+    @SuppressWarnings("Duplicates")
     public Build add(BuildDto buildDto) {
         Build build = new Build();
 
@@ -94,6 +95,45 @@ public class BuildService {
         return buildRepository.findById(id);
     }
 
-//    TODO
-//    public void updateBuild()
+
+    // найти билд по айди и поменять поля
+    @SuppressWarnings("Duplicates")
+    public Build updateBuild(BuildDto buildDto) {
+
+        Build newBuild = null;
+
+        Optional<Build> optionalBuild = buildRepository.findById(buildDto.getId());
+        if (optionalBuild.isPresent()) {
+            newBuild = getById(buildDto.getId()).get();
+
+            newBuild.setName(buildDto.getName());
+
+            newBuild.setHeroPosition(buildDto.getHeroPosition());
+
+            newBuild.setRune1(buildDto.getRunes1());
+            newBuild.setRune2(buildDto.getRunes2());
+            newBuild.setRune3(buildDto.getRunes3());
+
+            Optional<Hero> heroById = heroRepository.findById(buildDto.getHero().getId());
+            if (heroById.isPresent()) {
+                newBuild.setHero(heroById.get());
+            } else throw new ValidationException("not found hero by id " + buildDto.getHero().getId());
+
+            List<Item> items = new ArrayList<>();
+            for (BaseDto item : buildDto.getItems()) {
+                Optional<Item> item1 = itemRepository.findById(item.getId());
+                if (item1.isPresent()) {
+                    items.add(item1.get());
+                } else throw new ValidationException("not found item by id " + item.getId());
+            }
+            newBuild.setItems(items);
+
+            newBuild.setAbilities(buildDto.getAbilities());
+        } else throw new ValidationException("not found build by id " + buildDto.getHero().getId());
+
+
+        return buildRepository.save(newBuild);
+    }
+
+
 }
