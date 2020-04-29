@@ -1,5 +1,8 @@
 package com.nikulin.buildKeeper.controllers.dtos;
 
+import com.nikulin.buildKeeper.dal.entities.Hero;
+import com.nikulin.buildKeeper.dal.entities.Item;
+import com.nikulin.buildKeeper.enums.Ability;
 import com.nikulin.buildKeeper.enums.HeroPosition;
 import lombok.Data;
 

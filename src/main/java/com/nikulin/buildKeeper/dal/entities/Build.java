@@ -57,13 +57,6 @@ public class Build implements Serializable {
     @Setter(AccessLevel.NONE)
     private String rune3;
 
-    public Build(String name, Hero hero, HeroPosition heroPosition, Iterable<Item> items, Iterable<Ability> abilities) {
-        this.name = name;
-        this.hero = hero;
-        this.heroPosition = heroPosition;
-        this.items = (List<Item>) items;
-        this.abilities = String.valueOf(abilities);
-    }
 
     // get(list) + set(void ->list -> string)
     public List<Ability> getAbilities() {
@@ -89,6 +82,10 @@ public class Build implements Serializable {
             }
         }
         return list;
+    }
+
+    public String getAbilitiesString() {
+        return abilities;
     }
 
     public void setAbilities(List<Ability> list) {
@@ -164,6 +161,18 @@ public class Build implements Serializable {
             }
         }
         return list;
+    }
+
+    public String getRune1String() {
+        return rune1;
+    }
+
+    public String getRune2String() {
+        return rune2;
+    }
+
+    public String getRune3String() {
+        return rune3;
     }
 
     public void setRune2(String rune) {

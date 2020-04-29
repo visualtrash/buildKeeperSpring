@@ -1,211 +1,197 @@
-//package com.nikulin.buildKeeper;
-//
-//import com.nikulin.buildKeeper.dal.entities.Build;
-//import com.nikulin.buildKeeper.dal.entities.Hero;
-//import com.nikulin.buildKeeper.dal.entities.Item;
-//import com.nikulin.buildKeeper.dal.entities.Rune;
-//import com.nikulin.buildKeeper.dal.repositories.BuildRepository;
-//import com.nikulin.buildKeeper.enums.Ability;
-//import com.nikulin.buildKeeper.services.BuildService;
-//import org.junit.jupiter.api.Assertions;
-//import org.junit.jupiter.api.Test;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class TestBuildService {
-//
-//    @Test
-//    public void tryAddBuild() {
-//        BuildService buildService = new BuildService(new BuildRepository());
-//
-//        Build build = createTestBuild();
-//        buildService.add(build);
-//
-//        List<Build> list = buildService.getBuildList();
-//        for (Build eachBuild : list) {
-//            if (!eachBuild.getName().equals(build.getName())) {
-//                Assertions.fail();
-//            }
-//        }
-//    }
-//
-//    @Test
-//    public void tryGetAllBuilds() {
-//        BuildService buildService = new BuildService(new BuildRepository());
-//        try {
-//            // первая фаза теста - подготовка данных
-//            for (int i = 0; i < 5; i++) {
-//                buildService.add(createTestBuild());
-//            }
-//
-//            // вторая фаза теста - проверка ожидаемого результата
-//            List buildList = buildService.getBuildList();
-//            Assertions.assertEquals(5, buildList.size());
-//        } catch (Exception e) {
-//            Assertions.fail(e.toString());
-//        }
-//    }
-//
-//    @Test
-//    public void tryRemoveBuild() {
-//        BuildService buildService = new BuildService(new BuildRepository());
-//
-//        //add
-//        Build build = createTestBuild();
-//        buildService.add(build);
-//
-//        //remove
-//        List<Build> list = buildService.getBuildList();
-//
-//        try {
-//            buildService.removeById(build.getId());
-//
-//            for (Build eachBuild : list) {
-//                if (eachBuild.getId().equals(build.getId())) {
-//                    Assertions.fail();
-//                }
-//            }
-//        } catch (Exception e) {
-//            Assertions.fail(e.toString());
-//        }
-//    }
-//
-//    @Test
-//    public void tryRenameBuild() {
-//        BuildService buildService = new BuildService(new BuildRepository());
-//
-//        Build build = createTestBuild();
-//        buildService.add(build);
-//
-//        List<Build> list = buildService.getBuildList();
-//        try {
-//            buildService.updateName(build.getId(), "newName");
-//
-//            for (Build eachBuild : list) {
-//                if (eachBuild.getId().equals(build.getId()) && !eachBuild.getName().equals("newName")) {
-//                    Assertions.fail();
-//                }
-//            }
-//        } catch (Exception e) {
-//            Assertions.fail(e.toString());
-//        }
-//    }
-//
-//    @Test
-//    public void tryEditHeroPosition() {
-//        BuildService buildService = new BuildService(new BuildRepository());
-//
-//        Build build = createTestBuild();
-//        buildService.add(createTestBuild());
-//
-//        buildService.editPosition(build.getId(), "top");
-//
-//        List<Build> list = buildService.getBuildList();
-//        for (Build eachBuild : list) {
-//            if (eachBuild.getId().equals(build.getId()) && !eachBuild.getHeroPosition().equals("top")) {
-//                Assertions.fail();
-//            }
-//        }
-//    }
-//
-//    @Test
-//    public void tryUpdateItems() {
-//        BuildService buildService = new BuildService(new BuildRepository());
-//
-//        Build build = createTestBuild();
-//        buildService.add(build);
-//
-//        List<Item> itemList = new ArrayList<>();
-//        itemList.add(new Item("cool hat"));
-//        try {
-//            buildService.updateItems(build.getId(), itemList);
-//
-//            List<Build> list = buildService.getBuildList();
-//            for (Build eachBuild : list) {
-//                if (eachBuild.getId().equals(build.getId())) {
-//                    List<Item> editedItemList = eachBuild.getItems();
-//
-//                    for (Item eachItem : editedItemList) {
-//                        if (!eachItem.getName().equals("cool hat")) {
-//                            Assertions.fail();
-//                        }
-//                    }
-//
-//                }
-//            }
-//        } catch (Exception e) {
-//            Assertions.fail(e.toString());
-//        }
-//    }
-//
-//    @Test
-//    public void tryUpdateHeroInBuild() {
-//        BuildService buildService = new BuildService(new BuildRepository());
-//
-//        Build build = createTestBuild();
-//        buildService.add(build);
-//
-//        Hero newHero = new Hero("newHero");
-//        try {
-//            buildService.updateHero(build.getId(), newHero);
-//
-//            List<Build> list = buildService.getBuildList();
-//            for (Build eachBuild : list) {
-//                if (eachBuild.getId().equals(build.getId()) && !eachBuild.getHero().getName().equals("newHero")) {
-//                    Assertions.fail();
-//                }
-//            }
-//        } catch (Exception e) {
-//            Assertions.fail(e.toString());
-//        }
-//    }
-//
-//    @Test
-//    public void tryUpdateAbilitiesInBuild() {
-//        BuildService buildService = new BuildService(new BuildRepository());
-//
-//        Build build = createTestBuild();
-//        buildService.add(build);
-//
-//        List<Build> buildList = buildService.getBuildList();
-//
-//        List<Ability> newAbilities = new ArrayList<>();
-//        newAbilities.add(Ability.E);
-//        newAbilities.add(Ability.W);
-//        newAbilities.add(Ability.Q);
-//        newAbilities.add(Ability.Q);
-//        newAbilities.add(Ability.E);
-//        newAbilities.add(Ability.R);
-//
-//        try {
-//            buildService.updateAbilities(build.getId(), newAbilities);
-//        } catch (Exception e) {
-//            Assertions.fail(e.toString());
-//        }
-//
-//        for (Build eachBuild : buildList) {
-//            if (eachBuild.getId().equals(build.getId())) {
-//                List<Ability> editedAbilitiesList = eachBuild.getAbilities();
-//                if (!editedAbilitiesList.equals(newAbilities)) {
-//                    Assertions.fail();
-//                }
-//            }
-//        }
-//    }
-//
-//    private Build createTestBuild() {
-//        Hero hero = new Hero("Hero");
-//
-//        List<Item> itemList = new ArrayList<>();
-//        Item item = new Item("boots");
-//        itemList.add(item);
-//
-//        Rune rune = new Rune();
-//
-//        List<Ability> abilities = new ArrayList<>();
-//        abilities.add(Ability.Q);
-//
-//        return new Build("buildName", hero, itemList, rune, abilities, "userHeroPosition");
-//    }
-//}
-//
+package com.nikulin.buildKeeper;
+
+import com.nikulin.buildKeeper.configs.TestJpaConfig;
+import com.nikulin.buildKeeper.controllers.dtos.BaseDto;
+import com.nikulin.buildKeeper.controllers.dtos.BuildDto;
+import com.nikulin.buildKeeper.dal.entities.Build;
+import com.nikulin.buildKeeper.dal.entities.Hero;
+import com.nikulin.buildKeeper.dal.entities.Item;
+import com.nikulin.buildKeeper.enums.Ability;
+import com.nikulin.buildKeeper.enums.HeroPosition;
+import com.nikulin.buildKeeper.services.BuildService;
+import com.nikulin.buildKeeper.services.HeroService;
+import com.nikulin.buildKeeper.services.ItemService;
+import org.junit.After;
+import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {TestJpaConfig.class}, loader = AnnotationConfigContextLoader.class)
+@DirtiesContext
+public class TestBuildService {
+    @Autowired
+    private BuildService buildService;
+
+    @Autowired
+    private HeroService heroService;
+
+    @Autowired
+    private ItemService itemService;
+
+    @Test
+    public void tryAddBuild() {
+        try {
+            Build build = createTestBuild();
+
+            BuildDto buildDto = new BuildDto();
+            buildDto.setName(build.getName());
+            buildDto.setHero(new BaseDto(build.getHero().getId()));
+            buildDto.setHeroPosition(build.getHeroPosition());
+
+
+            List<BaseDto> items = new ArrayList<>();
+            for (Item i : build.getItems()) {
+                items.add(new BaseDto(i.getId()));
+            }
+            buildDto.setItems(items);
+
+            buildDto.setAbilities(build.getAbilitiesString());
+
+            buildDto.setRunes1(build.getRune1String());
+            buildDto.setRunes2(build.getRune2String());
+            buildDto.setRunes3(build.getRune3String());
+
+            Build build1 = buildService.add(buildDto);
+            if (!build1.getHero().getId().equals(build.getHero().getId())) {
+                Assertions.fail();
+            }
+
+            if (!build1.getName().equals(build.getName())) {
+                Assertions.fail();
+            }
+
+            if (!build1.getHeroPosition().equals(build.getHeroPosition())) {
+                Assertions.fail();
+            }
+
+            if (!build1.getAbilitiesString().equals(build.getAbilitiesString())) {
+                Assertions.fail();
+            }
+
+            if (build1.getItems().size() != build.getItems().size()) {
+                Assertions.fail();
+            }
+
+            if (!buildService.getById(build1.getId()).isPresent()) {
+                Assertions.fail();
+            }
+        } catch (Exception e) {
+            Assertions.fail(e);
+        }
+    }
+
+    @Test
+    public void tryRemoveBuild() {
+        try {
+            Build build = createTestBuild();
+
+            BuildDto buildDto = new BuildDto();
+            buildDto.setName(build.getName());
+            buildDto.setHero(new BaseDto(build.getHero().getId()));
+            buildDto.setHeroPosition(build.getHeroPosition());
+
+
+            List<BaseDto> items = new ArrayList<>();
+            for (Item i : build.getItems()) {
+                items.add(new BaseDto(i.getId()));
+            }
+            buildDto.setItems(items);
+
+            buildDto.setAbilities(build.getAbilitiesString());
+
+            buildDto.setRunes1(build.getRune1String());
+            buildDto.setRunes2(build.getRune2String());
+            buildDto.setRunes3(build.getRune3String());
+
+            Build build1 = buildService.add(buildDto);
+
+            buildService.removeById(build1.getId());
+
+            if (buildService.getById(build1.getId()).isPresent()) {
+                Assertions.fail();
+            }
+        } catch (Exception e) {
+            Assertions.fail(e);
+        }
+    }
+
+
+    @Test
+    public void tryUpdateBuild() {
+
+        try {
+            Build build = createTestBuild();
+
+            BuildDto buildDto = new BuildDto();
+            buildDto.setName(build.getName());
+            buildDto.setHero(new BaseDto(build.getHero().getId()));
+            buildDto.setHeroPosition(build.getHeroPosition());
+
+
+            List<BaseDto> items = new ArrayList<>();
+            for (Item i : build.getItems()) {
+                items.add(new BaseDto(i.getId()));
+            }
+            buildDto.setItems(items);
+
+            buildDto.setAbilities(build.getAbilitiesString());
+
+            buildDto.setRunes1(build.getRune1String());
+            buildDto.setRunes2(build.getRune2String());
+            buildDto.setRunes3(build.getRune3String());
+
+            Build build1 = buildService.add(buildDto);
+
+            buildDto.setId(build1.getId());
+            buildDto.setName("updatedName");
+
+            buildService.updateBuild(buildDto);
+
+            if (!buildService.getById(build1.getId()).get().getName().equals(buildDto.getName())) {
+                Assertions.fail();
+            }
+        } catch (Exception e) {
+            Assertions.fail(e);
+        }
+    }
+
+    private Build createTestBuild() {
+
+        Hero hero = heroService.add(new Hero("Hero"));
+
+        Item item = itemService.add("boots");
+        List<Item> itemList = new ArrayList<>();
+        itemList.add(item);
+
+        List<Ability> abilities = new ArrayList<>();
+        abilities.add(Ability.Q);
+
+        Build build = new Build();
+        build.setName("name");
+        build.setHero(hero);
+        build.setAbilities(abilities);
+        build.setHeroPosition(HeroPosition.MIDDLE);
+        build.setItems(itemList);
+        build.setRune1("1-1-1-1-1");
+        build.setRune2("1-1-1-1");
+        build.setRune3("1-1-1");
+
+        return build;
+    }
+
+    @After
+    public void afterEach() {
+        buildService.deleteAll();
+        itemService.deleteAll();
+        heroService.deleteAll();
+    }
+}

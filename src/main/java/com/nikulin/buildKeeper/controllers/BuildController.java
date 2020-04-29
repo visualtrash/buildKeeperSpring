@@ -19,12 +19,7 @@ public class BuildController {
     @Autowired
     BuildService buildService;
 
-    @RequestMapping(method = RequestMethod.POST, path = "create1")
-    public Build create(@RequestParam String name, @RequestParam HeroPosition heroPosition, @RequestParam Hero hero,
-                        @RequestParam Iterable<Item> items, Iterable<Ability> abilities) {
 
-        return buildService.add(name, heroPosition, hero, items, abilities);
-    }
 
     @RequestMapping(method = RequestMethod.POST, path = "create")
     public Build create(@RequestBody BuildDto build) {

@@ -55,4 +55,7 @@ public class HeroService {
         return heroRepository.save(hero.get());
     }
 
+    public void deleteAll() {
+        heroRepository.deleteAll();
+    }
 }

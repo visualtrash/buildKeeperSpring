@@ -14,7 +14,7 @@ public class ItemService {
     private ItemRepository itemRepository;
 
     public Item add(String itemName) {
-       return itemRepository.save(new Item(itemName));
+        return itemRepository.save(new Item(itemName));
     }
 
     public Iterable<Item> getAll() {
@@ -27,6 +27,10 @@ public class ItemService {
 
     public void removeById(Integer itemId) {
         itemRepository.deleteById(itemId);
+    }
+
+    public void deleteAll() {
+        itemRepository.deleteAll();
     }
 
     @Transactional

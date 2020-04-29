@@ -8,8 +8,6 @@ import com.nikulin.buildKeeper.dal.entities.Item;
 import com.nikulin.buildKeeper.dal.repositories.BuildRepository;
 import com.nikulin.buildKeeper.dal.repositories.HeroRepository;
 import com.nikulin.buildKeeper.dal.repositories.ItemRepository;
-import com.nikulin.buildKeeper.enums.Ability;
-import com.nikulin.buildKeeper.enums.HeroPosition;
 import com.nikulin.buildKeeper.exceptions.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,11 +74,6 @@ public class BuildService {
         return buildRepository.save(build);
     }
 
-    public Build add(String name, HeroPosition heroPosition, Hero hero,
-                     Iterable<Item> items, Iterable<Ability> abilities) {
-
-        return buildRepository.save(new Build(name, hero, heroPosition, items, abilities));
-    }
 
     public void removeById(Integer id) {
         buildRepository.deleteById(id);
@@ -100,23 +93,23 @@ public class BuildService {
     @SuppressWarnings("Duplicates")
     public Build updateBuild(BuildDto buildDto) {
 
-        Build newBuild = null;
+        Build buildToUpdate = null;
 
         Optional<Build> optionalBuild = buildRepository.findById(buildDto.getId());
         if (optionalBuild.isPresent()) {
-            newBuild = getById(buildDto.getId()).get();
+            buildToUpdate = optionalBuild.get();
 
-            newBuild.setName(buildDto.getName());
+            buildToUpdate.setName(buildDto.getName());
 
-            newBuild.setHeroPosition(buildDto.getHeroPosition());
+            buildToUpdate.setHeroPosition(buildDto.getHeroPosition());
 
-            newBuild.setRune1(buildDto.getRunes1());
-            newBuild.setRune2(buildDto.getRunes2());
-            newBuild.setRune3(buildDto.getRunes3());
+            buildToUpdate.setRune1(buildDto.getRunes1());
+            buildToUpdate.setRune2(buildDto.getRunes2());
+            buildToUpdate.setRune3(buildDto.getRunes3());
 
             Optional<Hero> heroById = heroRepository.findById(buildDto.getHero().getId());
             if (heroById.isPresent()) {
-                newBuild.setHero(heroById.get());
+                buildToUpdate.setHero(heroById.get());
             } else throw new ValidationException("not found hero by id " + buildDto.getHero().getId());
 
             List<Item> items = new ArrayList<>();
@@ -126,14 +119,16 @@ public class BuildService {
                     items.add(item1.get());
                 } else throw new ValidationException("not found item by id " + item.getId());
             }
-            newBuild.setItems(items);
+            buildToUpdate.setItems(items);
 
-            newBuild.setAbilities(buildDto.getAbilities());
+            buildToUpdate.setAbilities(buildDto.getAbilities());
         } else throw new ValidationException("not found build by id " + buildDto.getHero().getId());
 
 
-        return buildRepository.save(newBuild);
+        return buildRepository.save(buildToUpdate);
     }
 
-
+    public void deleteAll() {
+        buildRepository.deleteAll();
+    }
 }
